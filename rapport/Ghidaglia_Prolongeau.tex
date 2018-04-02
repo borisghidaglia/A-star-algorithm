@@ -1,0 +1,239 @@
+\documentclass[11pt]{article} % Default font size is 12pt, it can be changed here
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{listings}
+\lstset{literate=%
+    {á}{{\'a}}1
+    {é}{{\'e}}1
+    {è}{{\`e}}1
+    {í}{{\'i}}1
+    {ó}{{\'o}}1
+    {ú}{{\'u}}1
+}
+\lstset{
+language=HTML,
+basicstyle=\small,
+lineskip={-1.5pt}
+}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry} % Required to change the page size to A4
+\geometry{a4paper} % Set the page size to be A4 as opposed to the default US Letter
+
+\usepackage{graphicx} % Required for including pictures
+
+\usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
+\usepackage{wrapfig} % Allows in-line images such as the example fish picture
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{forest}
+
+\usepackage{color}
+
+\linespread{1.2} % Line spacing
+
+%\setlength\parindent{0pt} % Uncomment to remove all indentation from paragraphs
+
+\graphicspath{{Pictures/}} % Specifies the directory where pictures are stored
+
+% Add subsubsubsection
+%\usepackage{titlesec}
+%\setcounter{secnumdepth}{4}
+%\titleformat{\paragraph}
+%{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+%\titlespacing*{\paragraph}
+%{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+%\setcounter{secnumdepth}{4}
+%\setcounter{tocdepth}{4}
+
+\begin{document}
+%\newcommand{\citer}[1]{\footnotesize\par\noindent\textit{#1}\\}
+\newcommand{\p}[1]{\par\noindent{#1}\\}
+\newcommand{\pnr}[1]{\par\noindent{#1}}
+\newcommand{\q}[1]{\par\noindent{\textbf{#1}}}
+\newcommand{\m}[1]{\[#1\]}
+\newcommand{\mt}[1]{$#1$}
+\newcommand{\green}[1]{\textcolor{green}{#1}}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+
+\textsc{\LARGE ESIEE Paris}\\[1.5cm] % Name of your university/college
+\textsc{\Large PR-3602}\\[0.5cm] % Major heading such as course name
+%\textsc{\large Projet}\\[0.5cm] % Minor heading such as course title
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Résolution de problèmes en intelligence artificielle et optimisation combinatoire : les algorithmes A*} % Title of your document
+\HRule \\[4cm]
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Auteurs:}\\
+Boris \textsc{Ghidaglia}\\ % Your name
+Augustin \textsc{Prolongeau}\\ % Your name
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Encadrant:} \\
+M.\textsc{Couprie} % Supervisor's Name
+\end{flushright}
+\end{minipage}\\[4cm]
+
+{\large \today}\\[3cm] % Date, change the \today to a set date if you want to be precise
+
+{Sujet : https://perso.esiee.fr/~coupriem/PR3602/}
+
+%\includegraphics{Logo}\\[1cm] % Include a department/university logo - this will require the graphicx package
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+\tableofcontents
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	Algorithme Naif
+%----------------------------------------------------------------------------------------
+
+\section{Algorithme naïf}
+
+%------------------------------------------------
+\subsection{Concept}
+\p{Tester toutes les solutions possibles et choisir la moins couteuse.}
+
+%------------------------------------------------
+\subsection{Questions}
+\q{Combien y'a-t il de solutions possibles ?}
+\p{Le sujet stipule que nous sommes dans le cas d'une matrice \mt{N\times N}. Cela signifie que chaque agent peut être attribué à N postes différents. Cependant, à chaque fois qu'un agent est affecté à un poste, c'est une combinaison en moins à tester pour tous les autres.  Ainsi, il y a \mt{N!} solutions possibles.}
+
+\q{Si l'on suppose qu'une affectation peut être évaluée en une microseconde, et que l'on dispose de trois mois pour faire le calcul, quelle est la valeur maximum de \mt{N} possible pour envisager d'appliquer cette méthode ?}
+\p{Calculons combien de microsecondes trois mois représentent (on considèrera qu'un mois dure environ \mt{30.5} jours) :}
+\m{3\text{ mois} = 3\times 30.5\times 24\times 3600\times 10^6 = 7.9056\times 10^{12}\mu s}
+\p{Il suffit alors de prendre la plus grande factorielle inférieure à cette valeur pour connaître notre \mt{N} maximal théorique :}
+\m{16! = 2.0922789888\times 10^{13}}
+\m{15! = 1.307674368\times 10^{12}}
+\p{Notre \mt{N} maximum théorique est donc : \mt{15}. Si nous devons gérer une équipe de plus de 15 agents à affecter à plus de 15 postes, il nous sera impossible de calculer le résultat optimal via cet algorithme en trois mois ou moins.}
+
+
+
+%----------------------------------------------------------------------------------------
+%	Algorithme Glouton
+%----------------------------------------------------------------------------------------
+\newpage
+\section{Algorithme glouton}
+
+%------------------------------------------------
+\subsection{Concept}
+\p{Il s'agit de sélectionner la valeur minimale de la matrice des coûts, d'effectuer l'affectation correspondante et de retirer le poste et l'agent qui sont concernés, puis de recommencer jusqu'à affectation de la totalité de l'effectif.}
+
+%------------------------------------------------
+\subsection{Questions}
+\q{Montrez par un contre-exemple simple que l'algorithme glouton ne trouve pas toujours la solution optimale pour ce problème}
+\p{Posons les matrices $3\times 3$ suivantes: situation initiale, solution glouton et solution optimale:}
+
+\m{
+\begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 5 \\
+3 & 5 & 100
+\end{bmatrix}
+\begin{bmatrix}
+\color{red}1 & 2 & 3 \\
+2 & \color{red}4 & 5 \\
+3 & 5 & \color{red}100
+\end{bmatrix}
+\begin{bmatrix}
+1 & 2 & \color{green}3 \\
+\color{green}2 & 4 & 5 \\
+3 & \color{green}5 & 100
+\end{bmatrix}
+}\\
+
+\p{On constate bien que l'algorithme glouton dévore la plus petite valeur de la matrice $C_{k}$ à chaque étape $k$, sans se soucier des conséquences de ses actes sur ses choix futurs.}
+
+%----------------------------------------------------------------------------------------
+%	Algorithme A*
+%----------------------------------------------------------------------------------------
+\newpage
+\section{Algorithme A*}
+
+%------------------------------------------------
+\subsection{Avant d'aborder l'atelier : Test}
+\q{Qu'est-ce qu'un Graphe de Résolution de Problème (GRP), relativement à un problème donné ?}
+\p{Un GRP est un graphe dont les sommets représentent les états possibles d'un problème donné. On peut passer d'un état $i$ à un état $j$ via un arc $u$ si une régle le permet. Cet arc se verra attribuer un coût $c(u)$. Les sommets initiaux et les sommets terminaux }
+
+\q{Quel GRP proposeriez-vous pour le problème de l'affectation ?}
+\pnr{Il semble pertinent de représenter un arbre dans lequel chaque niveau $0,1,...,n$ illustrerait l'affectation d'un poste $j$ appartenant à $0,1,...,n$, et chaque sommet serait un agent i appartenant à $0,1,...,n$ choisi. On ajoutera un coût $c$ sur chaque arc. Illustration avec $aX$ l'agent $X$, et sans représenter les coûts ni les numéros des postes (pour des raison $LaTeXienne$) :}
+
+\begin{align}
+	\begin{forest}
+	for tree={circle,draw, l sep=20pt}
+	[Source
+	    [a1
+	      [a2
+	        [a3]
+	      ]
+	      [a3
+	        [a2]
+	      ]
+	    ]
+	    [a2
+	      [a1
+	        [a3]
+	      ]
+	      [a3
+	        [a1]
+	      ]
+	   ]
+	   [a3
+	     [a1
+	       [a2]
+	     ]
+	     [a2
+	       [a1]
+	     ]
+	   ]	   
+	]
+	\end{forest}
+\end{align}
+\newline
+
+\q{Quel est, schématiquement, le fonctionnement d'un algorithme A* ?}
+\p{}
+
+\q{Que représentent les symboles g, h et f dans l'algorithme ?}
+\p{Dans l'algorithme, $g$ est la somme des coûts entre la source et un sommet $k$ via un chemin $c$. h est la somme des valeurs des heuristiques entre ce point $k$ et l'objectif $n$. Enfin : $f = g + h$}
+
+
+\newpage
+%------------------------------------------------
+\subsection{Heuristique nulle}
+
+%------------------------------------------------
+\subsubsection{Concept}
+\p{}
+
+%------------------------------------------------
+\subsubsection{Preuve}
+\q{}
+
+
+
+\end{document}
