@@ -16,23 +16,27 @@ class A_star_tree:
         self.cost_matrix = cost_matrix
         self.heuristic = heuristic
         self.open = [SourceNode()]
-        self.agents_ids = set(range(cost_matrix.shape[0]))
+        self.agents = set(range(cost_matrix.shape[0]))
+        self.visited = 0
+
+    def set_heuristic(self, node):
+        node.heuristic = self.heuristic(self, node)
 
     def push_successors_in_open(self, father_node):
-        available_agents_ids = self.agents_ids - father_node.attributed_agents
-        print(available_agents_ids)
+        available_agents = self.agents - father_node.attributed_agents
+        # print(available_agents)
         job_nbr = father_node.job +1
-        for agent_id in available_agents_ids:
-            cost = self.cost_matrix[job_nbr][agent_id]
+        for agent in available_agents:
+            cost = self.cost_matrix[job_nbr][agent]
             child_node = Node(
                 job = job_nbr,
-                agent = agent_id,
-                heuristic = self.heuristic,
+                agent = agent,
                 predecessor = father_node,
                 cost = int(cost),
             )
+            self.set_heuristic(child_node)
             heappush(self.open, child_node)
-            print('--> '.join((str(el.f) for el in self.open)))
+            # print('--> '.join((str(el.f) for el in self.open)))
 
     def get_bests_affectations(self):
         """
@@ -40,8 +44,10 @@ class A_star_tree:
         find the shortest path of the tree representing all the affectations possibles.
         """
         while self.open:
+            self.visited += 1
             best_node = heappop(self.open)
             if best_node.job == self.cost_matrix.shape[0]-1:
                 return best_node.path
             self.push_successors_in_open(best_node)
+            # print(str(best_node.heuristic))
         return None
