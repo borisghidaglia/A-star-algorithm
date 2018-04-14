@@ -31,6 +31,8 @@ lineskip={-1.5pt}
 \usepackage{forest}
 
 \usepackage{color}
+\usepackage{multirow}
+
 
 \linespread{1.2} % Line spacing
 
@@ -209,18 +211,34 @@ M.\textsc{Couprie} % Supervisor's Name
 	     [a2
 	       [a1]
 	     ]
-	   ]	   
+	   ]
 	]
 	\end{forest}
 \end{align}
 \newline
 
+\newpage
 \q{Quel est, schématiquement, le fonctionnement d'un algorithme A* ?}
-\p{}
+\pnr{On pose : }
+
+\begin{itemize}
+  \item $OUVERT$ : une structure de données contenant les sommets découverts et non visités. On la maintiendra ordonnée par $f$.
+  \item $FERME$ : une structure de données contenant les sommets visités.\\
+\end{itemize}
+
+\pnr{L'algorithme évolue schématiquement ainsi :}
+\begin{itemize}
+  \item Tant que $OUVERT$ non vide
+  \item On récupère le meilleur sommet de la liste $OUVERT$, triée sur la base des valeurs de $f$ des sommets.
+  \item \textbf{Si} ce sommet est un/l' objectif, $FIN$ : on retourne le chemin vers ce sommet en remontant les prédécesseurs. Ce chemin est optimal si $h \leq h*$
+  \item \textbf{Sinon} on le place dans $FERME$ et on ajoute ses successeurs à $OUVERT$.\\
+\end{itemize}
 
 \q{Que représentent les symboles g, h et f dans l'algorithme ?}
-\p{Dans l'algorithme, $g$ est la somme des coûts entre la source et un sommet $k$ via un chemin $c$. h est la somme des valeurs des heuristiques entre ce point $k$ et l'objectif $n$. Enfin : $f = g + h$}
+\p{Dans l'algorithme, $g$ est la somme des coûts entre la source et un sommet $k$ via un chemin $c$. $h$ est une heuristique. Autrement dit, une estimation du coût entre ce sommet $k$ et un objectif $n$. Enfin : $f = g + h$}
 
+\q{Quelle est la condition sur h pour que l'on parle d'algorithme A* ?}
+\p{Pour que l'on parle d'algorithme $A^*$, on doit poser une heuristique $h$ telle que $h \leq h^*$, où $h^*$ est l'heuristique parfaite, l'estimation idéale.}
 
 \newpage
 %------------------------------------------------
@@ -228,12 +246,37 @@ M.\textsc{Couprie} % Supervisor's Name
 
 %------------------------------------------------
 \subsubsection{Concept}
-\p{}
+\p{L'heuristique nulle consiste simplement à attribuer une valeur $0$ aux $h$ de tous les sommets. L'algorithme se comporte alors comme celui de Dijkstra.}
 
 %------------------------------------------------
 \subsubsection{Preuve}
-\q{}
+\p{On pose $C$ notre matrice de coûts, et $c$ un coût. $h_0$ l'heuristique nulle, $h^*$ l'heuristique idéale.}
 
+\begin{equation}
+  \left.\begin{aligned}
+  \forall c \in C, c \geq 0 \implies h^* \geq 0\\
+  h = 0\\
+\end{aligned}\right\}
+\implies h \leq h^*
+\end{equation}
+
+\subsubsection{Performances}
+
+\newpage
+%------------------------------------------------
+\subsection{Performances}
+
+\subsubsection{Matrice A}
+
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Heuristique} & \textbf{Temps d'exécution (s)} & \textbf{Nombre de noeuds visités} \\ \hline
+        Nulle &   1   &  0   \\ \hline
+        Min par ligne &   1   &  1   \\ \hline
+        Min par colonne &   1   &  1   \\ \hline
+    \end{tabular}
+\end{center}
 
 
 \end{document}
