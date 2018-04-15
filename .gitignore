@@ -1,1 +1,4 @@
 **/__pycache__
+rapport/*
+!rapport/Ghidaglia_Prolongeau.pdf
+!rapport/Ghidaglia_Prolongeau.tex
