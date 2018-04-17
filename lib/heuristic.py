@@ -47,3 +47,6 @@ def max_sum_min_by_r_and_c(a_star, node):
         sum_min_by_rows(a_star, node),
         sum_min_by_cols(a_star, node)
         )
+
+
+all_heuristics = (null_heuristic,weighted_min,sum_min_by_rows,sum_min_by_cols,max_sum_min_by_r_and_c)
