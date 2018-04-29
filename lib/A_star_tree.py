@@ -5,12 +5,19 @@ class A_star_tree:
     """
     Implement A* algorithm for a special type of graph : trees. Thus, each node has one and
     only one predecessor. There is no need to check if a shorter path has been found
-    for a node already discovered.
+    for a node already discovered because it is impossible.
 
-    Parameters:
+    Attributes to give as parameters:
         - cost_matrix : is a numpy arrray. C[i,j] where i are agents and j are jobs, is the
         affectation cost to link them.
-        - heuristic : is a fonction which return a score
+        - heuristic : is a fonction which return a score for a given node
+
+    Attributes:
+        - open : a list that we'll use as heap thanks to heappush, to keep the most interessant
+        node to visit on the top. The fisrt node to be contained is obviously the SourceNode
+        - agents : the list of available agents
+        - visited : a value to keep track of the number of node A* will have to visit in order to
+        find the shortest path
     """
     def __init__(self, cost_matrix, heuristic):
         self.cost_matrix = cost_matrix
@@ -20,9 +27,21 @@ class A_star_tree:
         self.visited = 0
 
     def set_heuristic(self, node):
+        """
+        Will score a node based on the class's heuristic and set it.
+
+        Parameters:
+            - node : the node to assign a score to
+        """
         node.heuristic = self.heuristic(self, node)
 
     def push_successors_in_open(self, father_node):
+        """
+        Add all the father_node's successors in open (in a heap way).
+
+        Parameters:
+            - father_node : the node we want the successors added
+        """
         available_agents = self.agents - father_node.attributed_agents
         # print(available_agents)
         job_nbr = father_node.job +1
