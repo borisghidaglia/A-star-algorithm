@@ -196,10 +196,11 @@ solution optimale:}
 \subsection{Avant d'aborder l'atelier : Test}
 \q{Qu'est-ce qu'un Graphe de Résolution de Problème (GRP), relativement à un problème
  donné ?}
-\p{Un GRP est un graphe dont les sommets représentent les états possibles d'un
-problème donné. On peut passer d'un état $i$ à un état $j$ via un arc $u$ si une régle
- le permet. Cet arc se verra attribuer un coût $c(u)$. Les sommets initiaux et les sommets
-  terminaux XXXXXXXXXXXXXXXXx }
+ \p{Un GRP est un graphe dont les sommets représentent les états possibles d'un problème donné.
+  On peut passer d'un état $i$ à un état $j$ via un arc $u$ si une régle le permet.
+   Cet arc se verra attribuer un coût $c(u)$. Le sommet initial représente l'état initial
+    du problème et les sommets terminaux représentent chacun une solution possible du problème,
+     ils se différencient principalement par le coût qui les séparent du sommet initial.}
 
 \q{Quel GRP proposeriez-vous pour le problème de l'affectation ?}
 \pnr{Il semble pertinent de représenter un arbre dans lequel chaque niveau $0,1,...,n$
@@ -365,18 +366,75 @@ une valeur inférieure à $h^*$. }
 \newpage
 %------------------------------------------------
 \subsection{Performances}
+\p{Dû à un problème de précision lié au calcul du temps d'exécution, nous avons créé une machine virtuelle Linux, le module python time étant plus précis sous Linux que sous Windows.}
 
 \subsubsection{Matrice A}
 
 \begin{center}
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|c|c|c|}
         \hline
-        \textbf{Heuristique} & \textbf{Temps d'exécution (s)} & \textbf{Nombre de noeuds visités} \\ \hline
-        Nulle &   1   &  0   \\ \hline
-        Min par ligne &   1   &  1   \\ \hline
-        Min par colonne &   1   &  1   \\ \hline
-        Max(lignes, colonnes) &   1   &  1   \\ \hline
-        Min coefficienté &   1   &  1   \\ \hline
+        \textbf{Heuristique} & \textbf{Exécution (s)} & \textbf{Noeuds visités} & \textbf{Ratio Visités/Total} \\ \hline
+        Nulle &   0.00016   &  7   &  0.777 \\ \hline
+        Min par ligne &   0.00027   &  5   &  0.555 \\ \hline
+        Min par colonne &   0.00015   &  6   &  0.666 \\ \hline
+        Max(lignes, colonnes) &   0.00016   &  5   &  0.555 \\ \hline
+        Min coefficienté &   0.00014   &  6   &  0.666 \\ \hline
+    \end{tabular}
+\end{center}
+
+\subsubsection{Matrice B}
+
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Heuristique} & \textbf{Exécution (s)} & \textbf{Noeuds visités} & \textbf{Ratio Visités/Total} \\ \hline
+        Nulle &   0.00008   &  8   &  0.888 \\ \hline
+        Min par ligne &   0.0001   &  6   &  0.666 \\ \hline
+        Min par colonne &   0.00009   &  4   &  0.444 \\ \hline
+        Max(lignes, colonnes) &   0.00018   &  4   &  0.444 \\ \hline
+        Min coefficienté &   0.00011   &  6   &  0.666 \\ \hline
+    \end{tabular}
+\end{center}
+
+\subsubsection{Matrice C}
+
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Heuristique} & \textbf{Exécution (s)} & \textbf{Noeuds visités} & \textbf{Ratio Visités/Total} \\ \hline
+        Nulle &   0.00012   &  13   &  0.393 \\ \hline
+        Min par ligne &   0.00030   &  7   &  0.212 \\ \hline
+        Min par colonne &   0.00014   &  5   &  0.151 \\ \hline
+        Max(lignes, colonnes) &   0.00024   &  5   &  0.151 \\ \hline
+        Min coefficienté &   0.00027   &  8   &  0.242 \\ \hline
+    \end{tabular}
+\end{center}
+
+\subsubsection{Matrice D}
+
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Heuristique} & \textbf{Exécution (s)} & \textbf{Noeuds visités} & \textbf{Ratio Visités/Total} \\ \hline
+        Nulle &   0.00016   &  17   &  0.515 \\ \hline
+        Min par ligne &   0.00017   &  5   &  0.151 \\ \hline
+        Min par colonne &   0.00027   &  9   &  0.272 \\ \hline
+        Max(lignes, colonnes) &   0.00030   &  5   &  0.151 \\ \hline
+        Min coefficienté &   0.00035   &  12   &  0.363 \\ \hline
+    \end{tabular}
+\end{center}
+
+\subsubsection{Matrice E}
+
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Heuristique} & \textbf{Exécution (s)} & \textbf{Noeuds visités} & \textbf{Ratio Visités/Total} \\ \hline
+        Nulle &   33.4027   &  471337   &  5.018e-06 \\ \hline
+        Min par ligne &   0.76576   &  854   &  9.092e-09 \\ \hline
+        Min par colonne &   0.03716   &  65   &  6.920e-10 \\ \hline
+        Max(lignes, colonnes) &   0.06729   &  60   &  6.387e-10 \\ \hline
+        Min coefficienté &   20.1885   &  66813   &  7.113e-07 \\ \hline
     \end{tabular}
 \end{center}
 
@@ -387,5 +445,37 @@ une valeur inférieure à $h^*$. }
 
 \section{Annexe}
 
+\begin{figure}[!htb]
+   \begin{minipage}{0.48\textwidth}
+     \centering
+     \includegraphics[width=.9\linewidth]{A.png}
+     \caption{Matrice A}
+   \end{minipage}\hfill
+   \begin {minipage}{0.48\textwidth}
+     \centering
+     \includegraphics[width=.9\linewidth]{B.png}
+     \caption{Matrice B}
+   \end{minipage}
+\end{figure}
+
+\begin{figure}[!htb]
+   \begin{minipage}{0.48\textwidth}
+     \centering
+     \includegraphics[width=.9\linewidth]{C.png}
+     \caption{Matrice E}
+   \end{minipage}\hfill
+   \begin {minipage}{0.48\textwidth}
+     \centering
+     \includegraphics[width=.9\linewidth]{D.png}
+     \caption{Matrice D}
+   \end{minipage}
+\end{figure}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=.7\linewidth]{E.png}
+    \caption{Matrice E}
+  \end{center}
+\end{figure}
 
 \end{document}
