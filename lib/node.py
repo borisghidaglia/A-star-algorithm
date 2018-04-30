@@ -21,13 +21,10 @@ class Node:
         @functools.total_ordering creates all six comparison methods from two only
     """
     def __init__(self, job, agent,predecessor, heuristic=float('inf'), cost= float('inf')):
-        """
-        N.B. heuristic param must be a function
-        """
         self.job= job #int
         self.agent= agent #int
         self.predecessor= predecessor #Node type
-        self.heuristic= heuristic #int
+        self.heuristic= heuristic #int or Inf
         self.cost= cost #int, cost of path from predecessor to self
 
     def __str__(self):
@@ -45,7 +42,7 @@ class Node:
 
     @cached_property
     def g(self):
-        """A* g fucntion, represents the cost from source to self.
+        """A* g function, represents the cost from source to self.
 
         return type: int
         """

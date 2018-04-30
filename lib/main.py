@@ -1,20 +1,35 @@
 from A_star_tree import A_star_tree
 from heuristic import all_heuristics
+from test_matrices import matrices
 import numpy as np
 import time
 
 def get_random_matrix(dim, min_val=1, max_val=11):
+    """Returns numpy array of dimension dim, of randoms values between min_val and max_val"""
     return np.array([[np.random.randint(min_val, max_val) for i in range(dim)] for j in range(dim)])
 
-cost_matrix = get_random_matrix(5)
-print(cost_matrix)
+def print_array(a):
+    """Prints numpy array passed in parameters"""
+    print('[')
+    for i in range(a.shape[0]):
+        print('\t[%s],' %','.join(str(el) for el in a[i]))
+    print(']')
 
-for fun in all_heuristics:
-    tree = A_star_tree(cost_matrix, fun)
-    start_time = time.time()
-    path = tree.get_bests_affectations()
-    end_time = time.time()
-    print('\nCost : %s' %path[-1].g)
-    print(' --> '.join((str(el) for el in path)))
-    print(end_time - start_time)
-    print(tree.visited)
+def main():
+    for cost_matrix in matrices[:-1]:
+        print()
+        print(cost_matrix)
+
+        for fun in all_heuristics:
+            tree = A_star_tree(cost_matrix, fun)
+            start_time = time.time()
+            path = tree.get_bests_affectations()
+            end_time = time.time()
+            print()
+            print('Path : %s' %' --> '.join((str(el) for el in path)))
+            print('Cost : %s' %path[-1].g)
+            print('Number of visited nodes : %s' %tree.visited)
+            print('Time : %s' %str(end_time - start_time))
+
+if __name__=='__main__':
+    main()
