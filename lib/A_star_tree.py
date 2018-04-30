@@ -1,23 +1,23 @@
 from heapq import heappop, heappush
 from node import Node, SourceNode
+from math import factorial
 
 class A_star_tree:
     """
-    Implement A* algorithm for a special type of graph : trees. Thus, each node has one and
+    Implementation of A* algorithm for a special type of graph : trees. Thus, each node has one and
     only one predecessor. There is no need to check if a shorter path has been found
-    for a node already discovered because it is impossible.
+    for a node already visited because it is impossible to find one.
 
     Attributes to give as parameters:
         - cost_matrix : is a numpy arrray. C[i,j] where i are agents and j are jobs, is the
         affectation cost to link them.
-        - heuristic : is a fonction which return a score for a given node
+        - heuristic : is a fonction which returns a score for a given node
 
     Attributes:
-        - open : a list that we'll use as heap thanks to heappush, to keep the most interessant
-        node to visit on the top. The fisrt node to be contained is obviously the SourceNode
-        - agents : the list of available agents
-        - visited : a value to keep track of the number of node A* will have to visit in order to
-        find the shortest path
+        - open : a list that will act as heap thanks to heapq module, to keep the most interesting
+        node to visit at the top. The first node to be contained is obviously the SourceNode
+        - agents : a list containing all available agents
+        - visited : int value to keep track of the number of nodes visited thus far
     """
     def __init__(self, cost_matrix, heuristic):
         self.cost_matrix = cost_matrix
@@ -28,7 +28,7 @@ class A_star_tree:
 
     def set_heuristic(self, node):
         """
-        Will score a node based on the class's heuristic and set it.
+        Sets node's heuristic value based on the class's heuristic function and the node itself.
 
         Parameters:
             - node : the node to assign a score to
@@ -37,10 +37,10 @@ class A_star_tree:
 
     def push_successors_in_open(self, father_node):
         """
-        Add all the father_node's successors in open (in a heap way).
+        Adds all the father_node's successors in open, maintaining coherent heap structure.
 
         Parameters:
-            - father_node : the node we want the successors added
+            - father_node : the node from which the successors will be added to open
         """
         available_agents = self.agents - father_node.attributed_agents
         # print(available_agents)
@@ -59,8 +59,8 @@ class A_star_tree:
 
     def get_bests_affectations(self):
         """
-        Return the less expensive affectations possible in this cost_matrix. To do so, we'll
-        find the shortest path of the tree representing all the affectations possibles.
+        Returns the best affectations possible of the cost_matrix. To do so, we'll
+        find the least expensive path from the initial node to one of the terminal nodes.
         """
         while self.open:
             self.visited += 1
@@ -70,3 +70,10 @@ class A_star_tree:
             self.push_successors_in_open(best_node)
             # print(str(best_node.heuristic))
         return None
+
+    def GRP_size(self):
+        """Returns the total number of nodes in the GRP"""
+        value = 0
+        for i in range(self.cost_matrix.shape[0]):
+            value+= factorial(i+1)
+        return value

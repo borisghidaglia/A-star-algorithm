@@ -64,4 +64,4 @@ def weighted_min(a_star, node):
     return val_min*len(available_agents)
 
 
-all_heuristics = (null_heuristic,weighted_min,sum_min_by_rows,sum_min_by_cols,max_sum_min_by_r_and_c)
+all_heuristics = (null_heuristic,sum_min_by_rows,sum_min_by_cols,max_sum_min_by_r_and_c, weighted_min)
